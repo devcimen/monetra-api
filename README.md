@@ -117,11 +117,15 @@ Monetra is a powerful and intuitive expense tracker API designed to help users m
 10. **Filter and Export Expenses**
     - **Method**: `GET`
     - **Endpoint**: `/api/expenses/filter`
-    - **Description**: Filter expenses based on predefined or custom date ranges. The filtered results can also be exported to a CSV file.
+    - **Description**: Filter expenses based on predefined, custom date ranges, or any attribute. The filtered results can also be exported to a CSV file.
     - **Query Parameters**:
       - `range`: Predefined ranges such as `past_week`, `past_month`, `last_3_months`.
       - `start_date`: Custom start date for filtering (e.g., `2025-01-01`).
       - `end_date`: Custom end date for filtering (e.g., `2025-01-31`).
+      - `category`: Filter expenses by category (e.g., `Food`, `Transport`).
+      - `description`: Filter expenses by partial or full description match.
+      - `min_amount`: Filter for expenses greater than or equal to a certain amount.
+      - `max_amount`: Filter for expenses less than or equal to a certain amount.
       - `export`: Optional. If set to `true`, the filtered data will be exported as a CSV file.
     - **Headers**:
       ```
@@ -129,9 +133,9 @@ Monetra is a powerful and intuitive expense tracker API designed to help users m
       ```
     - **Example Request**:
       ```
-      GET /api/expenses/filter?range=past_month
+      GET /api/expenses/filter?category=Food
       GET /api/expenses/filter?start_date=2025-01-01&end_date=2025-01-31
-      GET /api/expenses/filter?start_date=2025-01-01&end_date=2025-01-31&export=true
+      GET /api/expenses/filter?min_amount=50&max_amount=100&export=true
       ```
 
 ---
