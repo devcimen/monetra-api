@@ -113,32 +113,25 @@ Monetra is a powerful and intuitive expense tracker API designed to help users m
      Authorization: Bearer <token>
      ```
 
-### Expense Reporting
-10. **Get Monthly Report**
+### Expense Filtering and Export
+10. **Filter and Export Expenses**
     - **Method**: `GET`
-    - **Endpoint**: `/api/reports/monthly`
-    - **Description**: Get a summary of expenses grouped by category for the current month.
+    - **Endpoint**: `/api/expenses/filter`
+    - **Description**: Filter expenses based on predefined or custom date ranges. The filtered results can also be exported to a CSV file.
+    - **Query Parameters**:
+      - `range`: Predefined ranges such as `past_week`, `past_month`, `last_3_months`.
+      - `start_date`: Custom start date for filtering (e.g., `2025-01-01`).
+      - `end_date`: Custom end date for filtering (e.g., `2025-01-31`).
+      - `export`: Optional. If set to `true`, the filtered data will be exported as a CSV file.
     - **Headers**:
       ```
       Authorization: Bearer <token>
       ```
-
-11. **Get Yearly Report**
-    - **Method**: `GET`
-    - **Endpoint**: `/api/reports/yearly`
-    - **Description**: Get a summary of expenses grouped by category for the current year.
-    - **Headers**:
+    - **Example Request**:
       ```
-      Authorization: Bearer <token>
-      ```
-
-12. **Export Expenses to CSV**
-    - **Method**: `GET`
-    - **Endpoint**: `/api/expenses/export`
-    - **Description**: Export all expenses to a CSV file.
-    - **Headers**:
-      ```
-      Authorization: Bearer <token>
+      GET /api/expenses/filter?range=past_month
+      GET /api/expenses/filter?start_date=2025-01-01&end_date=2025-01-31
+      GET /api/expenses/filter?start_date=2025-01-01&end_date=2025-01-31&export=true
       ```
 
 ---
