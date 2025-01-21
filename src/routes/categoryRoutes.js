@@ -1,12 +1,17 @@
 // Endpoints for category routes
 const express = require('express');
-const { createCategory } = require('../controllers/categoryController');
+const { createCategory, getCategories, updateCategory, deleteCategory } = require('../controllers/categoryController');
 const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 // Routes
 router.route('/')
-    .post(protect, createCategory);
+    .post(protect, createCategory)
+    .get(protect, getCategories)
+
+router.route('/:id')
+    .put(protect, updateCategory)
+    .delete(protect, deleteCategory);
 
 module.exports = router;
