@@ -1,5 +1,6 @@
 // Controller for expense related operations
 const Expense = require('../models/expenseModel');
+const { parseAsync } = require('json2csv');
 
 // Create a new expense
 const createExpense = async (req, res) => {
@@ -94,4 +95,60 @@ const deleteExpense = async (req, res) => {
     }
 };
 
-module.exports = { createExpense, getExpenses, getExpenseById, updateExpense, deleteExpense };
+// Filter expenses
+const filterExpenses = async (req, res) => {
+    try {
+        const { range, startDate, endDate, category, description, minAmount, maxAmount, export: exportCsv } = req.query;
+
+        let filter = { user: req.user._id };
+
+        // Date filter
+        const now = new Date();
+        if (range === 'past_week') {
+            filter.date = { $gte: new Date(now.setDate(now.getDate() - 7)) };
+        } else if (range === 'past_month') {
+            filter.date = { $gte: new Date(now.setMonth(now.getMonth() - 1)) };
+        } else if (range === 'past_3_months') {
+            filter.date = { $gte: new Date(now.setMonth(now.getMonth() - 3)) };
+        } else if (startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                return res.status(400).json({ message: 'Invalid date format' });
+            }
+            filter.date = { $gte: start, $lte: end };
+        }
+
+        // Category filter
+        if (category) filter.category = category;
+
+        // Description filter
+        if (description) filter.description = { $regex: description, $options: 'i' };
+
+        // Amount filter
+        if (minAmount) {
+            filter.amount = { ...filter.amount, $gte: parseFloat(minAmount) };
+        }
+        if (maxAmount) {
+            filter.amount = { ...filter.amount, $lte: parseFloat(maxAmount) };
+        }
+
+        // Get expenses
+        const expenses = await Expense.find(filter);
+
+        // Export to CSV
+        if (exportCsv === 'true') {
+            const fields = ['title', 'amount', 'category', 'description', 'date'];
+            const csv = await parseAsync(expenses, { fields });
+            res.header('Content-Type', 'text/csv');
+            res.attachment('expenses.csv');
+            return res.send(csv);
+        }
+
+        res.status(200).json(expenses);
+    } catch (error) {
+        res.status(400).json({ message: 'Failed to filter expenses', error: error.message });
+    }
+};
+
+module.exports = { createExpense, getExpenses, getExpenseById, updateExpense, deleteExpense, filterExpenses };
