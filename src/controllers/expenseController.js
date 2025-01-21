@@ -53,4 +53,45 @@ const getExpenseById = async (req, res) => {
     }
 };
 
-module.exports = { createExpense, getExpenses, getExpenseById };
+// Update an expense
+const updateExpense = async (req, res) => {
+    try {
+        const { title, amount, category, description, date } = req.body;
+
+        const expense = await Expense.findOne({ _id: req.params.id, user: req.user._id });
+
+        if (!expense) {
+            return res.status(404).json({ message: 'Expense not found' });
+        }
+
+        // Update if provided
+        if (title) expense.title = title;
+        if (amount) expense.amount = amount;
+        if (category) expense.category = category;
+        if (description) expense.description = description;
+        if (date) expense.date = date;
+
+        const updatedExpense = await expense.save();
+
+        res.status(200).json(updatedExpense);
+    } catch (error) {
+        res.status(400).json({ message: 'Failed to update expense', error: error.message });
+    }
+};
+
+// Delete an expense
+const deleteExpense = async (req, res) => {
+    try {
+        const expense = await Expense.findOneAndDelete({ _id: req.params.id, user: req.user._id });
+
+        if (!expense) {
+            return res.status(404).json({ message: 'Expense not found' });
+        }
+
+        res.json({ message: 'Expense removed' });
+    } catch (error) {
+        res.status(400).json({ message: 'Failed to remove expense', error: error.message });
+    }
+};
+
+module.exports = { createExpense, getExpenses, getExpenseById, updateExpense, deleteExpense };
