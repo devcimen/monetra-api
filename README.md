@@ -140,6 +140,133 @@ Monetra is a powerful and intuitive expense tracker API designed to help users m
 
 ---
 
+### Category Management
+11. **Create a Category**
+    - **Method**: `POST`
+    - **Endpoint**: `/api/categories`
+    - **Description**: Add a new category for expenses.
+    - **Request Body**:
+      ```json
+      {
+        "name": "Food",
+        "description": "Expenses related to food and dining"
+      }
+      ```
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+12. **Get All Categories**
+    - **Method**: `GET`
+    - **Endpoint**: `/api/categories`
+    - **Description**: Retrieve all categories created by the user.
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+13. **Update a Category**
+    - **Method**: `PUT`
+    - **Endpoint**: `/api/categories/:id`
+    - **Description**: Update the details of a specific category.
+    - **Request Body**:
+      ```json
+      {
+        "name": "Transportation",
+        "description": "Expenses related to travel and commuting"
+      }
+      ```
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+14. **Delete a Category**
+    - **Method**: `DELETE`
+    - **Endpoint**: `/api/categories/:id`
+    - **Description**: Delete a specific category by its ID.
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+### Income and Savings Management
+15. **Add Income**
+    - **Method**: `POST`
+    - **Endpoint**: `/api/income`
+    - **Description**: Add monthly income for the user.
+    - **Request Body**:
+      ```json
+      {
+        "amount": 5000.00,
+        "currency": "USD"
+      }
+      ```
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+16. **Get Income**
+    - **Method**: `GET`
+    - **Endpoint**: `/api/income`
+    - **Description**: Retrieve the user's income.
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+17. **Update Income**
+    - **Method**: `PUT`
+    - **Endpoint**: `/api/income`
+    - **Description**: Update the user's income.
+    - **Request Body**:
+      ```json
+      {
+        "amount": 6000.00,
+        "currency": "EUR"
+      }
+      ```
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+18. **Add Recurring Expense**
+    - **Method**: `POST`
+    - **Endpoint**: `/api/recurring`
+    - **Description**: Add a recurring expense.
+    - **Request Body**:
+      ```json
+      {
+        "amount": 200.00,
+        "category": "Rent",
+        "description": "Monthly rent",
+        "interval": "monthly"
+      }
+      ```
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+19. **Get Recurring Expenses**
+    - **Method**: `GET`
+    - **Endpoint**: `/api/recurring`
+    - **Description**: Retrieve all recurring expenses for the user.
+    - **Headers**:
+      ```
+      Authorization: Bearer <token>
+      ```
+
+### Multi-Currency Support
+20. **Supported Currencies**
+    - USD, EUR, GBP, CHF (Swiss Franc)
+    - All endpoints involving amounts will respect the selected currency.
+
+---
+
 ## Setup
 ### Prerequisites
 - Node.js v16+
