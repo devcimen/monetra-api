@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expensesRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/categories', categoryRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');

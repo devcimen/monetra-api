@@ -1,5 +1,6 @@
 // Controller for expense related operations
 const Expense = require('../models/expenseModel');
+const Category = require('../models/categoryModel');
 const { parseAsync } = require('json2csv');
 
 // Create a new expense
@@ -12,12 +13,19 @@ const createExpense = async (req, res) => {
             return res.status(400).json({ message: 'Please fill in all required fields' });
         }
 
+        // Check if category exists
+        const existingCategory = await Category.findOne({ name: category });
+
+        if (!existingCategory) {
+            existingCategory = await Category.create({ name: category });
+        }
+
         // Create a new expense
         const expense = await Expense.create({
             user: req.user._id,
             title,
             amount,
-            category,
+            category: existingCategory.name,
             description,
             date
         });
